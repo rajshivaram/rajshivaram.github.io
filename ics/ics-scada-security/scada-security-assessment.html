@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>SCADA Security Assessment - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">ICS</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/ics/ics-scada-security/scada-security-assessment">SCADA Security Assessment</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <h2 id="rmp"><a href="#rmp" class="headerlink" title="rmp"></a>Risk Management Process</h2>
+            <h4 id="ssl"><a href="#ssl" class="headerlink" title="ssl"></a>Simplified Security Lifecycle</h4><br>
+            <div class="picture-container">
+                <a href="ssl" data-featherlight="/ics/img/ssa/ssl.png">
+                    <img src="/ics/img/ssa/ssl.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="cia"><a href="#cia" class="headerlink" title="cia"></a>C-I-A Ranking for SCADA</h4>
+            <ul>
+                <p>Availability</p>
+                <li>Maintain access to mission critical system</li>
+                <li>Primary priority</li><br>
+                <p>Integrity</p>
+                <li>Prevent unauthorized commands</li>
+                <li>Prevent unauthorized configuration changes</li>
+                <li>close secondary priority</li><br>
+                <p>Confidentiality</p>
+                <li>Tertiary Priority</li>
+                <li>May present design and operational challenges</li>
+            </ul>
+            <h4 id="gra"><a href="#gra" class="headerlink" title="gra"></a>Four Main Goals of a Risk Assessment</h4>
+            <ul>
+                <li>Assets: identify, validate and classify</li>
+                <li>Risks: identify</li>
+                <li>Quantify: the impact of potential threats</li>
+                <li>Economic Balance: between the impact of the risk and the cost of the control.</li>
+            </ul>
+            <h4 id="rmp1"><a href="#rmp1" class="headerlink" title="rmp1"></a>Risk Management Process</h4>
+            <ul>
+                <li>Steps of Risk Assessment</li>
+                <li>Steps to reduce risk to an acceptable level</li>
+                <li>Steps to maintain that risk level</li>
+            </ul>
+            <h4 id="ra"><a href="#ra" class="headerlink" title="ra"></a>Risk Assessment</h4>
+            <p>several methodologies for risk assessments</p>
+            <ul>
+                <li>Sandia: BioRAM, RAM-C, RAM-CF, RAM-CI, RAM-D, RAM-E, RAM-P, RAM-T and RAM-W</li>
+                <li>Infrastructure Vulnerability Assessment Model (I-VAM)</li>
+                <li>Hierarchical Holographic Modeling (HHM)</li>
+                <li>Inoperability Input-Output Model (IIM)</li>
+                <li>NIST RMF</li>
+            </ul>
+            <h2 id="sap"><a href="#sap" class="headerlink" title="sap"></a>Security Assessment Program</h2>
+            <h4 id="m"><a href="#m" class="headerlink" title="m"></a>Methods</h4>
+            <ul>
+                <li>Internal Audits</li>
+                <li>Third-Party IV & V (Audits)</li>
+                <li>Vulnerability Assessment</li>
+                <li>Penetration Testing</li>
+            </ul>
+            <h4 id="ida"><a href="#ida" class="headerlink" title="ida"></a>In-Depth Assessment</h4>
+            <ul>
+                <p>Documentation Review</p>
+                <li>Policy & Procedure review</li>
+                <li>Architecture review</li>
+                <li>Log & audit trail review</li><br>
+                <p>Security Configuration Review</p>
+                <li>Rulesets & ACLS</li>
+                <p>Network Discovery</p>
+                <li>Asset Inventory & Scanning</li>
+                <li>Wireless Scanning</li>
+                <ul><li>Rogue / Insecure</li></ul><br>
+                <p>System recovery</p>
+                <li>Asset Inventory – Hardware & Software</li>
+                <li>Patch, AM, privileges & etc</li>
+                <p>People Review<br>Physical Security Review</p>
+            </ul>
+            <h4 id="ac"><a href="#ac" class="headerlink" title="ac"></a>Assessment Considerations</h4>
+            <ul>
+                <li>Critical systems first, direct support second, indirect support last</li>
+                <li>Prefer production over non-production</li>
+                <li>Inconsistencies between production and simulation</li>
+                <li>Maintain acceptable level of risk throughout assessment</li>
+                <li>Testing can and does break things</li>
+            </ul>
+            <h4 id="aa"><a href="#aa" class="headerlink" title="aa"></a>Assessment Approaches</h4>
+            <ul>
+                <li>Targeted</li>
+                <li>External</li>
+                <li>Internal</li>
+                <li>Blind</li>
+                <li>Double blind</li>
+            </ul>
+            <h2 id="SSTM"><a href="#SSTM" class="headerlink" title="SSTM"></a>SCADA Security Testing Methodology</h2>
+            <h4 id="stva"><a href="#stva" class="headerlink" title="stva"></a>Software Tools for Vulnerability Assessments</h4>
+            <div class="picture-container">
+                <a href="st" data-featherlight="/ics/img/ssa/st.png">
+                    <img src="/ics/img/ssa/st.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="npp"><a href="#npp" class="headerlink" title="npp"></a>NESCOR Penetration Process</h4>
+            <div class="picture-container">
+                <a href="nptp" data-featherlight="/ics/img/ssa/nptp.png">
+                    <img src="/ics/img/ssa/nptp.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="sopt"><a href="#sopt" class="headerlink" title="sopt"></a>SERVER OS Penetration Tasks</h4>
+            <div class="picture-container">
+                <a href="sos" data-featherlight="/ics/img/ssa/sos.png">
+                    <img src="/ics/img/ssa/sos.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="sapt"><a href="#sapt" class="headerlink" title="sapt"></a>Server Application Penetration Tasks</h4>
+            <div class="picture-container">
+                <a href="sapt" data-featherlight="/ics/img/ssa/sapt.png">
+                    <img src="/ics/img/ssa/sapt.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="ncpt"><a href="#ncpt" class="headerlink" title="ncpt"></a>Network Communications Penetration Tasks</h4>
+            <div class="picture-container">
+                <a href="ncpt" data-featherlight="/ics/img/ssa/ncpt.png">
+                    <img src="/ics/img/ssa/ncpt.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="edpt"><a href="#edpt" class="headerlink" title="edpt"></a>Embedded Device Penetration Tasks</h4>
+            <div class="picture-container">
+                <a href="edpt" data-featherlight="/ics/img/ssa/edpt.png">
+                    <img src="/ics/img/ssa/edpt.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h2 id="VAPT"><a href="#VAPT" class="headerlink" title="VAPT"></a>Vulnerability Assessment and Pentesting</h2>
+            <h4 id="vs"><a href="#vs" class="headerlink" title="vs"></a>Vulnerability Scanning</h4>
+            <ul><li>Open VAS</li><li>Commercial  - Nessus, Eeye, ISS(now IBM)  etc</li></ul>
+            <h4 id="pt"><a href="#pt" class="headerlink" title="pt"></a>Pentesting</h4>
+            <div class="picture-container">
+                <a href="ptm" data-featherlight="/ics/img/ssa/ptm.png">
+                    <img src="/ics/img/ssa/ptm.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="dp1"><a href="#dp1" class="headerlink" title="dp1"></a>Discovery Phase 1</h4>
+            <ul>
+                <li>Information Gathering</li>
+                <ul>
+                    <li>Employee’s names and contact information</li>
+                    <li>Host names and IP address</li>
+                    <li>System Information</li>
+                    <li>Applications and Services</li>
+                </ul>
+                <li>Policies/ Procedure reviews</li>
+                <li>Physical Walkthrough</li>
+                <li>Web searches (DNS, WHOIS etc)</li>
+            </ul>
+            <h4 id="dp2"><a href="#dp2" class="headerlink" title="dp2"></a>Discovery Phase 2</h4>
+            <ul>
+                <p>Vulnerability Analysis</p>
+                <li>Services, Applications, Os’s</li>
+                <li>Vulnerability Databses</li>
+                <p>Social Engineering</p>
+                <li>Influencing People</li>
+                <li>Dumpster Diving</li>
+                <li>Shoulder Surfing</li>
+                <p>Scanning</p>
+                <li>Ports & Services</li>
+            </ul>
+            <h4 id="kv"><a href="#kv" class="headerlink" title="kv"></a>Known Vulnerabilities</h4>
+            <ul>
+                <li>Unpatched systems</li>
+                <li>Unsecure protocols</li>
+                <li>Data Exposure</li>
+                <li>Security misconfiguration</li>
+                <li>Buffer overflows</li>
+                <li>Lack of training</li>
+                <li>weak authentication</li>
+            </ul>
+            <h4 id="ap"><a href="#ap" class="headerlink" title="ap"></a>Attack Phase</h4>
+            <ul>
+                <li>Gaining Access</li>
+                <li>Escalating Privileges</li>
+                <li>Browsing system</li>
+                <li>Installing addtional tools</li>
+            </ul>
+            <h4 id="av"><a href="#av" class="headerlink" title="av"></a>Attack Vectors</h4>
+            <ul>
+                <li>Misconfigurations</li>
+                <li>Kernel Flaws</li>
+                <li>Buffer Overflows</li>
+                <li>Insufficient Input Validation</li>
+                <li>Symbolic Links</li>
+                <li>File Descriptor Attacks</li>
+                <li>Race Conditions</li>
+                <li>Incorrect file and directory permissions</li>
+            </ul>
+            <h4 id="ep"><a href="#ep" class="headerlink" title="ep"></a>The Exploitation Process</h4>
+            <ul>
+                <li>Someone identifies a vulnerability in an OS</li>
+                <li>Someone writes and exploit to compromise the system based on the vulnerability</li>
+                <li>The OS vendor releases a patch to fix the vulnerability</li>
+                <li>Customers apply the patch and mitigate, or expunge the vulnerability</li>
+                <li>Those who don’t patch are exposed to the vulnerability and resulting exploit.</li>
+            </ul>
+            <h4 id="eps"><a href="#eps" class="headerlink" title="eps"></a>Exploitation Process Steps</h4>
+            <ul>
+                <li>Step 1: Identify the OS and Applications</li>
+                <li>Step 2: Find Vulnerabilities for OS and apps</li>
+                <li>Step 3: Find exploits associated with discovered vulnerabilities</li>
+                <li>Step 4: Exploit and plant back doors</li>
+            </ul>
+            <h4 id="rp"><a href="#rp" class="headerlink" title="rp"></a>Report Phase</h4>
+            <ul>
+                <li>Conducted simultaneously with all phases</li>
+                <li>Initial, Incremental and Final reports</li>
+                <li>Final Report</li>
+                <ul>
+                    <li>Vulnerability Discovered</li>
+                    <li>Overall Risk Rating</li>
+                    <li>Recommendations for Remediation</li>
+                </ul>
+                <li>Document Everything</li>
+            </ul>
+        </div>  
+        
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

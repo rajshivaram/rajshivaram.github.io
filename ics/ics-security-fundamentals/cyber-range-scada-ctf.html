@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>Cyber Range SCADA CTF Solution - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">ICS</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/ics/ics-security-fundamentals/cyber-range-scada-ctf">Solution for Cyber Range SCADA CTF</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <h2 id="disc"><a href="#DISC" class="headerlink" title="DISC"></a>Disclaimer</h2>
+            <p>We have documented the solution for SCADA CTF of InfosecInstitute as a notes for self assessment and not as a writeup/walkthrough for the CTF. If you are stuck with CTF and not able to continue further, we suggest you to try again before checking the solution as CTF's are made to test your skills of what you have learnt and to have fun.</p>
+            <h2 id="ctf1"><a href="#ctf1" class="headerlink" title="ctf1"></a>Capture The Flag - 1</h2>
+            <p>This CTF is all about reconnaisance. To complete Step 1, you need to scan open ports on the target domain skillsetlocal.com and discover 3 open TCP ports commonly used by ICS/SCADA protocols.</p>
+            <blockquote><p>Run an nmap scan to find the open ports on skillsetlocal.com.<br>The commonly used ports by scada protocols are 502, 1025 and 50100. </p></blockquote>
+            <p>For the next step, we need to know which protocols we are dealing with. Using the port numbers you discovered, identify the associated protocols.</p>
+            <blockquote><p>modbus is the protocol which uses port 502 and kamstrup is the protocol which uses other 2 ports 1025 and 50100.</p></blockquote>
+            <p>For the device associated with Protocol 1, find its unit ID using one of the tools you've used in the labs.</p>
+            <blockquote><p>use plcscan to bruteforce uid on the ip range to get the uid as 248<br>10.0.x.0/24</p></blockquote>
+            <p>For the final step in this CTF, you will need to read some data from the device associated with Protocol 2. A good tool that can do that for you is already on the system. Run it to read the value of Energy in hi-res.</p>
+            <blockquote><p>As it is mentioned protocol 2, search the system for any tools or scripts based on 2 protocol and run it on the IP address which is used above.</p></blockquote>
+            
+            <h2 id="ctf2"><a href="#ctf2" class="headerlink" title="ctf2"></a>Capture The Flag - 2</h2>
+            <p>This CTF is all about Information Gathering. To complete the first challenge, you need to identify the ICS/SCADA protocol and port number that is used for communications in the traffic you're capturing.</p>
+            <blockquote><p>Run a tshark in verbose mode and save it in a file<br>sudo tshark -i eth0 -V -x tcp > /tmp/capture<br>read the file and pipe with more +/modbus<br>modbus is the protocol used. </p></blockquote>
+            <p>For the next step, we need to know which are the 2 ip addresses communicating.</p>
+            <blockquote><p>Continue from the above step and check for the ip address 192.168.x.x.<br>which are 192.168.6.133 and 192.168.6.134.</p></blockquote>
+            <p>For the device identified, we need to find its unit ID</p>
+            <blockquote><p>The uid's of server and client will be as 133, 134</p></blockquote>
+            <p>For the final step in this CTF, we need to find the function codes used in the communication.<p>
+            <blockquote><p>function codes used are 8 and 17.</p></blockquote>
+
+            <h2 id="ctf3"><a href="#ctf3" class="headerlink" title="ctf3"></a>Capture The Flag - 3</h2>
+            <p>This CTF, we need to play a role of an incident responder and we need to find the attacke's ip address.</p>
+            <blockquote><p>Open conport.log and go to last part of log file to see the ip address of a attacker having ip address 192.168.6.135.</p></blockquote>
+            <p>For the next step, we need to know the uid of the target which was targeted by the attacker.</p>
+            <blockquote><p>grep the conpot.log file for the word slave-id and last packet shows the slave-id which is 17.</p></blockquote>
+            <p>For the attack identified, we need to find the 3 function codes used by the attacker</p>
+            <blockquote><p>open capture2.pcap file with tshark and grep for the word Func to see the most used function codes as 17, 43, 5<br>tshark -r capture2.pcap | grep -w Func | more</p></blockquote>
+            <p>For the final step in this CTF, we need to find the attacker's intention.<p>
+            <blockquote><p>Uploading the shell is the answer as we can clearly see the shell code in both the files provided for investigation.</p></blockquote>
+
+            
+        </div>  
+        
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+
+    
+
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

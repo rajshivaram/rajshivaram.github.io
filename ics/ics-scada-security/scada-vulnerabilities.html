@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>SCADA Vulnerabilities - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">ICS</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/ics/ics-scada-security/scada-vulnerabilities">SCADA Vulnerabilities</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <h2 id="csv"><a href="#csv" class="headerlink" title="csv"></a>Common SCADA Vulnerabilities</h2><br>
+            <h4 id="ivl"><a href="#ivl" class="headerlink" title="ivl"></a>ICS Vulnerability Landscape</h4>
+            <p>Policy and Procedural Vulnerabilities<br>Platform Vulnerabilities</p>
+            <ul>
+                <li>Platform Configuration Vulnerabilities</li>
+                <li>Host information (hardware, software)</li>
+                <li>Platform Hardware Vulnerabilities</li>
+                <li>Platform Software Vulnerabilities</li>
+                <li>Platform Malware Protection Vulnerabilities</li>
+            </ul>
+            <p>Network Vulnerabilities</p>
+            <ul>
+                <li>Network Configuration Vulnerabilities</li>
+                <li>Network Hardware Vulnerabilities</li>
+                <li>Network Perimeter Vulnerabilities</li>
+                <li>Network Monitoring and Logging Vulnerabilities</li>
+                <li>Communication Vulnerabilities</li>
+                <li>Wireless Connection Vulnerabilities</li>
+            </ul>
+            <h4 id="ksvc"><a href="#ksvc" class="headerlink" title="ksvc"></a>Known SCADA Vulnerability Chart</h4><br>
+            <div class="picture-container">
+                <a href="ksvc" data-featherlight="/ics/img/sv/ksvc.png">
+                    <img src="/ics/img/sv/ksvc.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="ssmkv"><a href="#ssmkv" class="headerlink" title="ssmkv"></a>SCADA Software Manufactures with Known Vulnerabilities</h4><br>
+            <div class="picture-container">
+                <a href="ssmkv" data-featherlight="/ics/img/sv/ssmkv.png">
+                    <img src="/ics/img/sv/ssmkv.png" class="img-thumbnail" /></a>
+            </div><br>
+            <div class="picture-container">
+                <a href="ssmkv1" data-featherlight="/ics/img/sv/ssmkv1.png">
+                    <img src="/ics/img/sv/ssmkv1.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="ppv"><a href="#ppv" class="headerlink" title="ppv"></a>Policy & Procedural Vulnerabilities</h4><br>
+            <ul>
+                <li>Inadequate security policy for the ICS</li>
+                <li>No formal ICS security training and awareness program</li>
+                <li>Inadequate security architecture and design</li>
+                <li>No specific or documented security procedures were developed from the security policy for the ICS</li>
+                <li>Absent or deficient ICS equipment implementation guidelines</li>
+                <li>Lack of administrative mechanisms for security enforcement</li>
+                <li>Few or no security audits on the ICS</li>
+                <li>No ICS specific continuity of operations or disaster recovery plan (DRP)</li>
+                <li>Lack of ICS specific configuration change management</li>
+            </ul>
+            <h4 id="pcv"><a href="#pcv" class="headerlink" title="pcv"></a>Platform Configuration Vulnerabilities</h4><br>
+            <ul>
+                <li>OS and vendor software patches may not be developed until significantly after security vulnerabilities are found</li>
+                <li>OS and application security patches are not maintained</li>
+                <li>OS and application security patches are implemented without exhaustive testing</li>
+                <li>Default configurations are used</li>
+                <li>Critical configurations are not stored or backed up</li>
+                <li>Data unprotected on portable device</li>
+                <li>Lack of adequate password policy</li>
+                <ul>
+                <li>No password used</li>
+                <li>Password disclosure</li>
+                <li>Password guessing</li>
+                <li>Inadequate access controls applied</li>
+                </ul>
+                <li>Inadequate testing of security changes</li>
+                <li>Inadequate physical protection for critical systems</li>
+                <li>Unauthorized personnel have physical access to equipment</li>
+                <li>Insecure remote access on ICS components</li>
+                <li>Dual network interface cards (NIC) to connect networks</li>
+                <li>Undocumented assets</li>
+                <li>Radio frequency and electro-magnetic pulse (EMP)</li>
+                <li>Lack of backup power</li>
+                <li>Loss of environmental control</li>
+                <li>Lack of redundancy for critical components</li>
+                <li>Buffer overflow</li>
+                <li>Installed security capabilities not enabled by default</li>
+                <li>Denial of service (DOS)</li>
+                <li>Mishandling of undefined, poorly defined, or "illegal" conditions</li>
+                <li>OLE for Process Control (OPC) relies on Remote Procedure Call (RPC) and Distributed Component Object Model (DCOM)</li>
+                <li>Use of insecure industry-wide ICS protocols</li>
+                <li>Use of clear text</li>
+                <li>Unneeded services running</li>
+                <li>Use of proprietary software that has been discussed at conferences and in periodicals</li>
+                <li>Inadequate authentication and access control for configuration and programming software</li>
+                <li>Intrusion detection/prevention software not installed</li>
+                <li>Logs not maintained</li>
+                <li>Incidents are not detected</li>
+            </ul>
+            <h4 id="pmpv"><a href="#pmpv" class="headerlink" title="pmpv"></a>Platform Malware Protection Vulnerabilities</h4><br>
+            <ul>
+                <li>Malware protection software not installed</li>
+                <li>Malware protection software or definitions not current</li>
+                <li>Malware protection software implemented without exhaustive testing</li>
+            </ul>
+            <h4 id="ncv"><a href="#ncv" class="headerlink" title="ncv"></a>Network Configuration Vulnerabilities</h4><br>
+            <ul>
+                <li>Weak network security architecture</li>
+                <li>Data flow controls not employed</li>
+                <li>Poorly configured security equipment</li>
+                <li>Network device configurations not stored or backed up</li>
+                <li>Passwords are not encrypted in transit</li>
+                <li>Passwords exist indefinitely on network devices</li>
+                <li>Inadequate access controls applied</li>
+            </ul>
+            <h4 id="nhv"><a href="#nhv" class="headerlink" title="nhv"></a>Network Hardware Vulnerabilities</h4><br>
+            <ul>
+                <li>Inadequate physical protection of network equipment</li>
+                <li>Unsecured physical ports</li>
+                <li>Loss of environmental control</li>
+                <li>Non-critical personnel have access to equipment and network connections</li>
+                <li>Lack of redundancy for critical networks</li>
+            </ul>
+            <h4 id="npv"><a href="#npv" class="headerlink" title="npv"></a>Network Perimeter Vulnerabilities</h4><br>
+            <ul>
+                <li>No security perimeter defined</li>
+                <li>Firewalls nonexistent or improperly configured</li>
+                <li>Control networks used for non-control traffic</li>
+                <li>Control network services not within the control network</li>
+            </ul>
+            <h4 id="nv"><a href="#nv" class="headerlink" title="nv"></a>Network Vulnerabilities</h4><br>
+            <ul>
+                <p>Monitoring and Logging Vulnerabilities</p>
+                <li>Inadequate firewall and router logs</li>
+                <li>No security monitoring on the ICS network</li><br>
+                <p>Communication Vulnerabilities</p>
+                <li>Critical monitoring and control paths are not identified</li>
+                <li>Standard, well-documented communication protocols are used in plain text</li>
+                <li>Authentication of users, data or devices is substandard or nonexistent</li>
+                <li>Lack of integrity checking for communications</li><br>
+                <p>Wireless Connection Vulnerabilities</p>
+                <li>Inadequate authentication between clients and access points</li>
+                <li>Inadequate data protection between clients and access points</li>
+            </ul>
+            <h4 id="ociv"><a href="#ociv" class="headerlink" title="ociv"></a>Other Common ICS Vulnerabilities</h4><br>
+            <ul>
+                <li>Ports and services open to outside</li>
+                <li>Dial-up modems</li>
+                <li>Improperly configured equipment (firewall does not guarantee protection)</li>
+                <li>Improperly installed/configured software (e.g., default passwords)</li>
+                <li>Inadequate physical protection</li>
+                <li>Vulnerabilities related to "systems of systems" (component integration)</li>
+                <li>Vendor hardcoded passwords and engineering backdoors</li>
+            </ul>
+
+            <h2 id="vs"><a href="#vs" class="headerlink" title="vs"></a>Vulnerability Scanning</h2><br>
+            <h4 id="ivsc"><a href="#ivsc" class="headerlink" title="ivsc"></a>ICS/SCADA Vulnerability Scanning Considerations</h4>
+            <p>Vulnerability scans can crash ICS/SCADA systems</p>
+            <ul><li>Applications designed without security in mind</li><li>Poor QA— only positive testing, while scanners send unexpected data</li></ul>
+            <p>Perform scans on test environments if possible<br>OR<br>Leverage redundancy (typically deployed in control systems)<br>Plan the scan</p>
+            <ul><li>Assume the crash</li><li>Involve system administrators</li><li>Have a recovery plan</li></ul>
+            <h4 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h4>
+            <h4 id="nessus"><a href="#nessus" class="headerlink" title="nessus"></a>Nessus</h4>
+            <p>Full list available <a href="https://www.tenable.com/plugins/index.php?view=all&family=SCADA">Here</a><br>Plugin examples:</p>
+            <ul>
+                <li>DNP3 Link Layer</li>
+                <li>DNP3 Unsolicited Messaging</li>
+                <li>ICCP/COTP Protocol</li>
+                <li>Matrikon OPC Explorer</li>
+                <li>Modbus/TCP Coil Access</li>
+                <li>Modicon Modbus/TCP Programming Function Code Access</li>
+                <li>Modicon PLC Telnet Server</li>
+                <li>National Instruments Lookout</li>
+                <li>OPC DA Server</li>
+                <li>Siemens S7-SCL</li>
+                <li>Siemens SIMATIC PDM</li>
+                <li>Siemens-Telegyr ICCP Gateway</li>
+                <li>Cisco OSI Stack Malformed Packet Vulnerability</li>
+                <li>Telvent OASyS System - Identifies hosts running a Telvent OASyS Server.</li>
+            </ul>
+            <h4 id="ba"><a href="#ba" class="headerlink" title="ba"></a>Bandolier Audit</h4><br>
+            <div class="picture-container">
+                <a href="baf" data-featherlight="/ics/img/sv/baf.png">
+                    <img src="/ics/img/sv/baf.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="vt"><a href="#vt" class="headerlink" title="vt"></a>Vulnerability Types</h4>
+            <ul>
+                <li>Remotely Exploitable</li>
+                <li>Locally Exploitable</li>
+                <li>Denial of Service</li>
+                <li>Information Leakage</li>
+                <li>Encryption Flaws</li>
+                <li>Configuration and Human Errors</li>
+                <li>Dozens of other less common vulnerabilities (randomness not random enough, etc.)</li>
+            </ul>
+            <h2 id="ara"><a href="#ara" class="headerlink" title="ara"></a>Authentication and Remote Access</h2><br>
+            <h4 id="av"><a href="#av" class="headerlink" title="av"></a>Authentication vulnerabilities</h4>
+            <p>Credentials usage:</p>
+            <ul>
+                <li>Using default credentials</li>
+                <li>Using weak passwords</li>
+            </ul>
+            <p>Transmitting credentials in cleartext over the network using standard protocols (Telnet, FTP)<br>Design and Implementation of authentication mechanisms in applications:</p>
+            <ul>
+                <li>Authentication bypass</li>
+                <li>Password reset flaws</li>
+                <li>Race conditions and other software vulnerabilities</li>
+            </ul>
+            <p>Default passwords can be easily found online using “SCADAPASS” containing a list of default usernames and passwords for over 200 ICS/SCADA products.<br>Some default accounts have no password</p>
+            <h4 id="rav"><a href="#rav" class="headerlink" title="rav"></a>Remote Access vulnerabilities</h4><br>
+            <div class="picture-container">
+                <a href="rav" data-featherlight="/ics/img/sv/rav.png">
+                    <img src="/ics/img/sv/rav.png" class="img-thumbnail" /></a>
+            </div><br>
+        </div>  
+        
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

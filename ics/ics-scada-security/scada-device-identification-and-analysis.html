@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>SCADA Device Identification and Analysis - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">ICS</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/ics/ics-scada-security/scada-device-identification-and-analysis">SCADA Device Identification and Analysis</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <h2 id="ig"><a href="#ig" class="headerlink" title="ig"></a>Information Gathering</h2>
+            <p>Collecting and analyzing information about ICS/SCADA components, including:</p>
+            <ul>
+                <li>Network information</li>
+                <li>Host information (hardware, software)</li>
+                <li>Account and protocol information</li>
+                <li>Personnel information</li>
+                <li>Company policies and procedures</li>
+            </ul>
+            <p>Involves technical and non-technical methods</p>
+            <ul>
+                <li>Analyzing publicly available information</li>
+                <li>Social engineering, dumpster diving</li>
+                <li>Analyzing information received from routine queries</li>
+            </ul>
+            <h2 id="m"><a href="#m" class="headerlink" title="m"></a>Methods</h2>
+            <h4 id="gh"><a href="#gh" class="headerlink" title="gh"></a>Google Hacking</h4><br>
+            <div class="picture-container">
+                <a href="gh" data-featherlight="/ics/img/dia/gh.png">
+                    <img src="/ics/img/dia/gh.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h4 id="shod"><a href="#shod" class="headerlink" title="shod"></a>Shodan</h4>
+            <ul>
+                <li>"The scariest search engine on the internet" (CNN)</li>
+                <li>Scans the entire IPv4 range 24/7, collecting information on internet-connected devices</li>
+                <li>Common search queries: "SCADA", "Modbus" , "Simatic+HMl", "Simatic+S7", "HMI"</li>
+            </ul>
+            <div class="picture-container">
+                <a href="shod" data-featherlight="/ics/img/dia/shod.png">
+                    <img src="/ics/img/dia/shod.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h2 id="dnsnmp"><a href="#dnsnmp" class="headerlink" title="dnsnmp"></a>DNS and SNMP Recon</h2>
+            <h4 id="mzt"><a href="#mzt" class="headerlink" title="mzt"></a>Malicious Zone Transfer</h4>
+            <ul>
+                <li>The primary method of abusing a DNS server is to perform a zone transfer</li>
+                <li>An attacker can pretend to be a secondary DNS server, and request zone file from primary</li>
+                <li>If the DNS server is not configured correctly, it will allow zone transfers from the Internet</li>
+                <li>Easy to configure firewall and DNS servers incorrectly</li>
+                <li>DNS requires 53/UDP and 53/TCP used for large queries</li>
+                <li>Zone transfers occur on 53/TCP</li>
+            </ul>
+            <h4 id="drt"><a href="#drt" class="headerlink" title="drt"></a>DNS Record Types</h4>
+            <p>What do we get out of zone transfer?</p>
+            <ul>
+                <li>Resource Records (RRs):</li>
+                <li>SOA — Start of Authority</li>
+                <li>NS — Name Server</li>
+                <li>A— Address Record</li>
+                <li>MX — Mail Exchange</li>
+                <li>If you find a strange RR, look it up at <a href="http://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml">IANA</a></li>
+            </ul>
+            <h4 id="hs"><a href="#hs" class="headerlink" title="hs"></a>Hacking SNMP</h4>
+            <ul>
+                <li>There are many possibilities for attacking SNMP</li>
+                <li>Loads of system information in MIBs that can be enumerated via SNMP walking</li>
+                <li>Sniffing: both community strings and device-to-manager communication</li>
+                <li>Default community strings<br>Public Community: public<br>Private Community: private</li>
+                <li>Spoofing address of manager or devices</li>
+                <li>Brute forcing SNMP authentication is easy</li>
+                <li>If we can obtain private string, we can write values to MIB. Device is ours!</li>
+            </ul>
+            <p>SNMP hacking is made easier in the real world by:</p>
+            <ul>
+                <li>Admins blast out community strings in large environments looking for routers</li>
+                <li>SNMP v1 is in wide use</li>
+                <li>Even if default strings not used, "standard" is Companyname-public</li>
+                <li>Many admins do not watch for brute forcing</li>
+                <li>Most won't notice a "quiet" device for a few hours or days, if IP address is taken or communication severed as long as we can generate a heartbeat</li>
+            </ul>
+            <h4 id="snmpt"><a href="#snmpt" class="headerlink" title="snmpt"></a>SNMP Tools</h4>
+            <ul>
+                <li>The tool “onesixtyone” is a good force tool for snmp</li>
+                <li>Enumeration with “snmpwalk” to issue GET requests</li>
+                <li>“Ireasoning MIB Browser” is a fully featured GUI.</li>
+            </ul>
+            <h2 id="hps"><a href="#hps" class="headerlink" title="hps"></a>Host and Port Scanning</h2>
+            <h4 id="nrd"><a href="#nrd" class="headerlink" title="nrd"></a>Network Recon Defined</h4>
+            <p><b>What is Network Recon?</b></p>
+            <p><i>Process of finding potential systems to exploit</i></p>
+            <p>The process:</p>
+            <ul>
+                <li>Use information gathered in previous phases</li>
+                <li>Network Discovery:</li>
+                <ul><li>Attempt to discover additional systems, servers, and devices</li></ul>
+                <li>Host Discovery:</li>
+                <ul><li>Determine which ports are open on these devices</li></ul>
+                <li>Service Interrogation:</li>
+                <li>Interrogate ports to find actual services running on them</li>
+            </ul>
+            <h4 id="nd"><a href="#nd" class="headerlink" title="nd"></a>Network Discovery</h4>
+            <p>Most basic form of Network Discovery is a ping sweep</p>
+            <ul>
+                <li>Use a tool to issue ICMP echo requests (type 8)</li>
+                <li>Wait for Echo replies (type 0)</li>
+            </ul>
+            <p>Ping sweeps are not the most reliable.<br>An unresponsive host can mean one of many things</p>
+            <ul>
+                <li>The host could truly be down or disconnected from the network</li>
+                <li>The packet has simply been rejected</li>
+                <li>An upstream router or firewall may have silently dropped the packet</li>
+            </ul>
+            <p>Can be dangerous on ICS/SCADA networks!</p>
+            <ul><li>A ping sweep on an ICS network caused a system controlling the creation of integrated circuits to hang, resulting in a $50,000 damage (NIST 800-82)</li></ul>
+            <h4 id="nr"><a href="#nr" class="headerlink" title="nr"></a>Network Recon</h4>
+            <ul>
+                <li>After Network Discovery, all identified hosts should be scanned for open ports</li>
+                <li>There are literally hundreds of port scanning methods</li>
+                <li>For this module, we will concentrate on the most reliable, accurate, and least stealthy method of port scanning</li>
+                <li>TCP Connect Scanning:</li>
+                <ul>
+                    <li>This port scanning method uses the 3-Way Handshake to ensure a port is open</li></ul>
+                    <li>Results are almost 100% reliable on the first try</li>
+                    <li>Because of this, the default Nmap ping is ICMP Echo Request followed by a ACK to Port 80</li>
+                    <li>Operating Systems, IDSs, Firewalls, etc. can all easily notice a TCP Connect scan</li>
+                    <li>Some ICS/SCADA-specific scripts included with standard install:</li>
+                    <ul><li>modbus-discover</li><li>s7-info</li></ul>
+                </ul>
+            </ul>
+            <h4 id="ISP"><a href="#isp" class="headerlink" title="isp"></a>ICS Scanning Precautions</h4>
+            <ul>
+                <li>Nmap is powerful and fast, and, therefore, dangerous for SCADA systems</li>
+                <li>Some tips on using Nmap safely:</li>
+                <li>Take advantage of timing options for slow scanning</li>
+                <ul>
+                    <li>Several canned templates (polite, sneaky, paranoid)</li>
+                    <li>The --scan-delay option scan-delay Is will send one probe per second</li>
+                </ul>
+                <li>Select scripts manually (do not use the —sc option, which will call all scripts)</li>
+                <li>Avoid intense scans (such as version detection)</li>
+            </ul>
+            <h4 id="sst"><a href="#sst" class="headerlink" title="sst"></a>SCADA Scanning Tools</h4>
+            <p>PLCScan</p>
+            <ul>
+                <li>Python-based tool from SCADAStrangeLove</li>
+                <li>Scans for ports 102 (Siemens) and 502 (Modbus)</li>
+                <li>Retrieves modules, firmware version</li>
+                <li>Can brute-force Unit IDs</li>
+            </ul>
+            <p>Metasploit Auxiliary Modules</p>
+            <ul>
+            <li>Don't provide a shell, complete a single task (such as scanning)</li>
+            <li>Several SCADA-specific modules included</li>
+            </ul>
+            <h2 id="rfsc"><a href="#rfsc" class="headerlink" title="rfsc"></a>RF Signal Capture</h2>
+            <h4 id="rfp"><a href="#rfp" class="headerlink" title="rfp"></a>Why Capture RF Packets?</h4>
+            <ul>
+                <li>ZigBee and other RF communications are commonly used in ICS/SCADA systems:</li>
+                <ul>
+                    <li>Smart water metering (ZigBee)</li>
+                    <li>Home/office lighting/HVAC/appliances control (ZigBee)</li>
+                    <li>Actuating natural gas control valves via Digital Enhanced Cordless (ZigBee)</li>
+                    <li>As of December 2016, there were over 64,000,000 smart meter  in the US, more than 310,000 of them industrial (eia.gov)</li>
+                </ul>
+                <li>Network traffic can be extracted from captured RF packets</li>
+                <li>Spoofed RF signals can be transmitted to replay captured data, impersonate the target field device, or for DOS attacks</li>
+                <p>Numerous hardware tools exist for capturing RF signals</p>
+                <ul>
+                    <li>USRP B200</li>
+                    <li>HackRF</li>
+                    <li>Api-Mote (IEEE 802.15.4 and ZigBee)</li>
+                </ul>
+                <p>Frequencies can be easily found by referencing FCC or vendor documentation<br>If Spread Spectrum techniques are used, recovery is difficult and time consuming Signal Demodulation</p>
+                <ul>
+                    <li>Analyzing RF capture to determine modulation technique used</li>
+                    <li>Tools can be used to extract communications payload from bitstream</li>
+                    <li>GNURadio can be used for further process.</li>
+                </ul>
+            </ul>
+            <h2 id="snt"><a href="#snt" class="headerlink" title="snt"></a>Sniffing Network Traffic</h2>
+            <h4 id="dsniff"><a href="#dsniff" class="headerlink" title="dsniff"></a>Dsniff</h4>
+            <p>Many tools support offensive sniffing on switched networks<br>dnsiff is the best tool for malicious sniffing</p>
+            <ul>
+                <li>Snags authentication information clear text protocols</li>
+                <li>Sniffs on switched networks</li>
+                <li>Hijacks encrypted protocols via a man-in-the-middle attack</li>
+                <li>dsniff captures authentication information for an amazing number of protocols</li>
+                <li>FTP, Telnet, HTTP, POP, poppass, NNTP, IMAP, SNMP, LDAP, Rlogin, RIP, OSPF, NFS, YP, SOCKS, XII, CVS, IRC, AIM, ICQ, Napster, PostgreSQL, Meeting Maker, Citrix Microsoft SMB, and Oracle SQL*Net protocols ICA, Symantec pcAnywhere, NAI Sniffer and many others.</li>
+            </ul>
+            <h4 id="wire"><a href="#wire" class="headerlink" title="wire"></a>Wireshark</h4>
+            <p>Wireshark is the most popular open source sniffer</p>
+            <ul>
+                <li>Supports the decoding of hundreds of protocols</li>
+                <li>Flexible capturing and saving formats</li>
+                <li>Ability to watch components of a TCP stream</li>
+                <li>Very powerful filtering language</li>
+            </ul>
+            <h2 id="dfa"><a href="#dfa" class="headerlink" title="dfa"></a>Device Functionality Analysis - Embeded Device Analysis Tasks</h2>
+            <h4 id="ca"><a href="#ca" class="headerlink" title="ca"></a>Circuit Analysis: Identifying electronic main components and functionalities</h4>
+            <p>The goal is to gather information about hardware and identify potential  components for attack<br>Tasks include:</p>
+            <ul>
+                <li>Taking pictures</li>
+                <li>Reading chip IDs</li>
+                <li>Tracing buses</li>
+                <li>Identifying major electronic functionality</li>
+            </ul>
+            <h4 id="da"><a href="#da" class="headerlink" title="da"></a>Datasheet Analysis: Information about device roles in the control process</h4>
+            <p>Datasheets can reveal lots of useful information, including:</p>
+            <ul>
+                <li>Functional descriptions</li>
+                <li>Pins for data dumping</li>
+                <ul><li>Encryption keys and other valuable information can be extracted from data dumps</li></ul>
+                <li>Absolute minimum and maximum ratings (supply voltage, power consumption, input currents, temperatures for storage, operating, soldering, etc.)</li>
+                <ul><li>Can be used for DOS attacks</li></ul>
+            </ul>
+            <p>Other related documentation (user manuals, etc.) should also be examined:</p>
+            <ul>
+                <li>Default passwords</li>
+                <li>Default ports/protocols for firmware updates and other communications</li>
+                <li>Default file locations for control applications on host system</li>
+            </ul>
+            <h4 id="ifa"><a href="#ifa" class="headerlink" title="ifa"></a>Interface Functional Analysis: Identify possible connections to device interfaces</h4>
+            <p>Most embedded devices provide physical interfaces for local configuration and debugging</p>
+            <ul>
+                <li>Analysis includes obtaining software and hardware for connecting to the filed device and identifying functionality and high-risk functions, such as:</li>
+                <ul>
+                    <li>Firmware updates</li>
+                    <li>Configurations</li>
+                    <li>Security table reads</li>
+                </ul>
+            </ul>
+            <p>For non-serial interfaces (web-based, etc.) analysis includes exploring the application and identifying features available to the user and major sections and sections of the application</p>
+            <h4 id="fbd"><a href="#fbd" class="headerlink" title="fbd"></a>Firmware Binary Disassembly: Retrieving firmware binary instructions</h4>
+            <p>Difficulty ranges from Medium to Extremely High</p>
+            <ul><li>Many microprocessors don't have publicly available decompilers</li></ul>
+            <p>Successful disassembly and analysis may reveal lots of useful information:</p>
+            <ul>
+                <li>Weaknesses in memory use</li>
+                <li>Loop structures</li>
+                <li>Cryptographic functions (as well as hardcoded keys)</li>
+            </ul>
+
+        </div>  
+        
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

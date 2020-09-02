@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>ICS/SCADA Security Fundamentals - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">ICS</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/ics/ics-security-fundamentals/ics-protocols">ICS Protocols</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <h2 id="fbp"><a href="#fbp" class="headerlink" title="fbp"></a>FieldBus Protocol</h2>
+            <ul>
+                <li>Replaced point-to-point and parallel communication with serial communication.</li>
+                <li>Standardized communications</li>
+                <li>Used to communicate from Control Center or Master Terminal Unit (MTU) to a PLC or Remote Terminal Unit (RTU).</li>
+                <li>Used to communicate from PLC or RTU to actuators and sensors.</li>
+             </ul>
+            <h2 id="rs"><a href="#rs" class="headerlink" title="rs"></a>RS-232 and RS-485</h2>
+            <h4 id="rs232"><a href="#rs232" class="headerlink" title="rs232"></a>RS-232</h4>
+            <ul>
+                <li>Traditional name for a series of standards for <b>serial</b>  binary single-ended data and control signals connecting between DTE (data terminal equipment) and DCE(data communications equipment)</li>
+                <li>Current version is (TIA)-232-F, issued in 1997</li>
+                <li>Used to be standard for serial communications between computers until late 1990’s – superseeded by USB</li>
+                <li>Remains in use in the industrial sector</li>
+             </ul>
+            <h4 id="rs485"><a href="#rs485" class="headerlink" title="rs485"></a>RS-485</h4>
+            <ul>
+                <li>Current version is TIA-485</li>
+                <li>Still widely used, no signs of decline in popularity</li>
+                <li>Programming is more difficult</li>
+                <li>Data is sent and received on the same two wires, so the timing of the controlling BUS is critical.</li>
+             </ul>
+            <h2 id="MB"><a href="#MB" class="headerlink" title="MB"></a>MODBUS</h2>
+            <ul>
+                <li>Developed in the late 1970s by Modicon, Inc (Now Schneider-Electric)</li>
+                <li>It is commonly used for connecting devices in the Industrial environment.</li>
+                <li>It is free and open-sourced</li>
+                <li>Uses client server architecture</li>
+                <li>Based on Polling Requests</li>
+                <li>Default TCP port 502</li>
+             </ul>
+            <h2 id="DNP3"><a href="#DNP3" class="headerlink" title="DNP3"></a>Distributed Network Protocol  3 (DNP3)</h2>          
+            <ul>
+                <li>Westronic (now GE-Harris) developed in 1993</li>
+                <li>Community managed (DNP.org)</li>
+                <li>Used primarily in Electric and Water/Wastewater industries.</li>
+                <li>Tolerates EMI-induced distortion and poor transmission media</li>
+                <li>similar to modbus in many ways</li>
+                <li>Default TCP Port 20000</li>
+            </ul>
+            <h2 id="HART"><a href="#HART" class="headerlink" title="HART"></a>HART</h2>          
+            <p>Highway Addressable Remote Transducer (HART) Protocol</p>
+            <ul>
+                <li>Master-Slave Communication</li>
+                <li>Two simultaneous communication channels: the 4-20mA analog signal and a digital signal</li>
+                <li>Managed by the FieldComm Group</li>
+                <li>Three classes of commands:</li>
+                <ul>
+                <li>Universal</li>
+                <li>Common Practice</li>
+                <li>Device Specific</li>
+                </ul>
+            </ul>
+            <h2 id="IE"><a href="#IE" class="headerlink" title="IE"></a>Industrial Ethernet</h2>          
+            <p>Basically “serial comms” encapsulated in TCP/IP packets</p>
+            <ul>
+                <li>Modbus becomes Modbus TCP</li>
+                <li>DNP3 becomes DNP3 over TCP/IP</li>
+                <li>HART becomes HART-IP</li>
+                <li>Foundation Fieldbus H1 becomes HSE</li>
+                <li>DeviceNet becomes EtherNet/IP</li>
+                <li>ProfiBus becomes ProfiNet</li>
+            </ul>
+            <h2 id="ti"><a href="#ti" class="headerlink" title="ti"></a>TASE 2.0 and ICCP</h2>
+            <p>Inter-control Center Comm Protocol (ICCP) [AKA TASE 2.]</p>
+            <ul>
+                <li>Communicating between control centers or between substations on the electric grid</li>
+                <li>Does not provide authentication or encryption</li>
+                <li>Client-Server model</li>
+             </ul>
+            <h2 id="cip"><a href="#cip" class="headerlink" title="cip"></a>Common Industry Protocol (CIP)</h2>
+            <ul>
+                <li>Manufacturing automation applications</li>
+                <li>Used for control, safety, synchronization, motion, configuration and information</li>
+                <li>Community managed (ODVA.org)</li>
+                <li>EtherNet/IP TCP 44818 & UDP 2222</li>
+                <li>Four Protocols:</li>
+                <ul>
+                <li>EtherNet/IP</li>
+                <li>CompoNet</li>
+                <li>ControlNet</li>
+                <li>DeviceNet</li>
+                </ul>
+            </ul>
+            <h2 id="ff"><a href="#ff" class="headerlink" title="ff"></a>Foundation Fieldbus H1 / HSE</h2>
+            <ul>
+                <li>H1: serial over twisted pair</li>
+                <li>HSE: Encapsulation over Ethernet</li>
+             </ul>
+            <h2 id="bacnet"><a href="#bacnet" class="headerlink" title="bacnet"></a>BACnet</h2>
+            <p>Building Automation and Control Networks</p>
+            <ul>
+                <li>commonly used with existing Ethernet infrastructure, VLAN and WAN</li>
+                <li>Devices plug directly into Ethernet switches</li>
+                <li>Uses UDP/IP for compatability with existing IP infrastructure</li>
+                <li>BACnet/ip is peer-to-peer</li>
+            </ul>
+            <h2 id="pp"><a href="#pp" class="headerlink" title="pp"></a>PROFIBUS and PROFINET</h2>
+            <ul>
+                <li>Developed by ProfiBus/ProfiNet International e.V</li>
+                <li>Open standard for industrial automation</li>
+                <li>Serial or TCP/IP</li>
+                <li>keyword or XML</li>
+                <li>ProfiNET IO uses TCP/UDP ports 34962, 34963, 34964.</li>
+            </ul>
+        </div>  
+        
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

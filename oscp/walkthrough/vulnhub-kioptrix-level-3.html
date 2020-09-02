@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Let us discuss about security">
+    <meta name="author" content="3kara &lt;adm1n.3kara@protonmail.com&gt;">
+    <meta name="twitter:card" content="summary" /> <!--Page Cover-->
+    
+    <title>Vulnhub Kioptrix Level 3 - 3kara</title> 
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <a href="javascript:" id="rtt"><i class="fas fa-chevron-up"></i></a>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!--Menu Links and Overlay-->
+    <div class="menu-bg">
+        <div class="menu-container">
+            <ul>
+                <li class="menu-item"><a href="/">Home</a></li>
+                <li class="menu-item"><a href="/api">API</a></li>
+                <li class="menu-item"><a href="/blog">Blog</a></li>
+                <li class="menu-item"><a href="/ics">ICS</a></li>
+                <li class="menu-item"><a href="/oscp">Oscp</a></li>
+                <li class="menu-item"><a href="/search">Search <i class="fas fa-search"></i></a>
+            </ul>
+        </div>
+    </div>
+    
+    <!--Hamburger Icon-->
+    <nav>
+        <a href="#menu"></a>
+    </nav>
+    
+    <div class="container">
+    
+        <!-- Main Content -->
+        <div class="row">
+        <div class="col-sm-12">
+    
+        <!--Title and Logo-->
+        <header>
+        <div class="logo">
+            <a href="/"><i class="logo-icon rotate linear infinite fas fa-dharmachakra" aria-hidden="true"></i></a>
+            <h1 id="main-title" class="title">Walkthrough</h1>
+        </div>
+        </header>
+    
+    <section class="main">
+                
+                     
+    <div class="post">
+    
+        <div class="post-header">
+            <h1 class="title"><a href="/oscp/walkthrough/vulnhub-kioptrix-level-3">Vulnhub - Kioptrix Level 3</a></h1>
+        </div>
+    
+        <div class="content">
+
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2>
+            <p>Kioptrix level 3 is the next level machine of kioptrix level 2 featuring the vulnerabilities File Inclusion, Improper Access Control, Reused Credentials, SQL Injection, Unrestricted Upload of File with Dangerous Type, Weak Credentials.</p><p>Important thing with this challenge is once you find the IP (DHCP Client), edit your hosts file and point it to kioptrix3.com. There’s a web application involved, so to have everything nice and properly displayed you really need to do this.</p>
+            <h2 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h2>
+            <p>We imported the VM into Virtual Box and kept the network adapter in Bridged mode. Now we should identify the ip address of the VM to get started, so we will run a ping scan on IP range.</p>
+            <blockquote><p>kal@3kara:~$  sudo nmap -n -sn -vvv 192.168.1.0-255</p></blockquote>
+            <p>If you are not able to identify the target  IP then try out other options which are shown <a href="/oscp/information-gathering/identifying-targets">here.</a></p>
+            <p>Now that we have the IP for the kioptrix VM, let's go ahead and edit our <b>/etc/hosts</b> file to make sure we don't encounter any errors in the future. Once we open up and edit the hosts file, make sure it looks similar to below</p>
+            <div class="picture-container">
+                <a href="hosts" data-featherlight="/oscp/img/kl3/hosts.png">
+                    <img src="/oscp/img/kl3/hosts.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Once we save the modified hosts file, we go ahead and run a simple service version scan on it.</p>
+            <div class="picture-container">
+                <a href="nmap" data-featherlight="/oscp/img/kl3/nmap.png">
+                    <img src="/oscp/img/kl3/nmap.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>we see that only two ports are open TCP/22 (SSH) and TCP/80 (HTTP). From this we can understand that, much of our exploitation will be taken place on the website. So let’s go ahead and browse to the website by entering the address of the machine in our browser.</p>
+            <p>It seems like some sort of security website, with login page, gallery and comment section in blog. so first let us check the gallery section to see if we can find something.</p>
+            <p>After browsing to the gallery page, we can see Ligoat Press Room gallery link having sorting options. if we select sort by "PhotoID" we can see "id" parameter in the url, let us see if the parameter was vulnerable to SQL Injection.</p>
+            <div class="picture-container">
+                <a href="sorting" data-featherlight="/oscp/img/kl3/sorting.png">
+                    <img src="/oscp/img/kl3/sorting.png" class="img-thumbnail" /></a>
+            </div><br>
+            <h2 id="exploitingusingsqli"><a href="#Exploitingusingsqli" class="headerlink" title="Exploitingusingsqli"></a>Exploiting using SQLI</h2>
+            <p>so let us inject a single quote to the id parameter to trigger the sql error confirming the <b>id</b> parameter is vulnerable to SQL Injection.</p>
+            <div class="picture-container">
+                <a href="sqlerror" data-featherlight="/oscp/img/kl3/sqlerror.png">
+                    <img src="/oscp/img/kl3/sqlerror.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>At this point many people will invoke SQLMap to try and exploit this vulnerability, BUT, we are going to do it manually! so, the first thing we want to do is find the number of columns in a Database and also find out which column is vulnerable to SQL Injection.<br>So in the URL after the <b>id</b> variable, we will append the following.<blockquote>-1 union select 1,2,3,4,5,6</blockquote></p>
+            <div class="picture-container">
+                <a href="sqlcolumns" data-featherlight="/oscp/img/kl3/sqlcolumns.png">
+                    <img src="/oscp/img/kl3/sqlcolumns.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>From this we can see that the application has 6 columns (There is a very good sql injection tutorial <a href="http://breakthesecurity.cysecurity.org/2010/12/hacking-website-using-sql-injection-step-by-step-guide.html">here</a> on how to find the total number of columns), and that columns 2 and 3 are vulnerable to SQL Injection.</p>
+            <p>Our next step would be to find out what Version of SQL is running. This will aid us in better formatting our SQL Syntax depending on what SQL Database is being used (NoSQL, MySQL, MSSQL, etc).</p><p>Since column 2 is vulnerable, we will be injecting our code in place of 2 in the URL. Let’s go ahead and replace 2 with @@version to get the version. Your syntax should look like below:<blockquote>-1 union select 1,@@version,3,4,5,6</blockquote></p>
+            <div class="picture-container">
+                <a href="sqlversion" data-featherlight="/oscp/img/kl3/sqlversion.png">
+                    <img src="/oscp/img/kl3/sqlversion.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>SQL Version 5.0.51a is actually MySQL - great, we now know how to better format our SQL Syntax. Our next step in the SQL Injection would be to find what tables are located in the database. Let’s inject the following SQL Query.<blockquote>-1 union select 1,group_concat(table_name),3,4,5,6 from information_schema.tables where table_schema=database()--</blockquote></p>
+            <div class="picture-container">
+                <a href="sqltable" data-featherlight="/oscp/img/kl3/sqltable.png">
+                    <img src="/oscp/img/kl3/sqltable.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Nice! We now are able to see all the tables stored in the database! The dev_accounts looks really interesting, let’s go ahead and see if we can’t find out the columns contained in that table.</p>
+            <p>Before that, we have to convert the table name <b>dev_accounts</b> into ASCII codes using sql char() function. CHAR() can be used to insert control characters into character strings. This needs to be done otherwise the SQL Query will fail.</p>
+            <div class="picture-container">
+                <a href="sqlchar" data-featherlight="/oscp/img/kl3/sqlchar.png">
+                    <img src="/oscp/img/kl3/sqlchar.png" class="img-thumbnail" /></a>
+            </div><br>
+            <div class="picture-container">
+                <a href="sqlchars" data-featherlight="/oscp/img/kl3/sqlchars.png">
+                    <img src="/oscp/img/kl3/sqlchars.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Now, the complete sql injection query will look like below:<blockquote>-1 union select 1,group_concat(column_name),3,4,5,6 FROM information_schema.columns WHERE table_name=CHAR(100, 101, 118, 95, 97, 99, 99, 111, 117, 110, 116, 115)--</blockquote> </p>
+            <div class="picture-container">
+                <a href="iup" data-featherlight="/oscp/img/kl3/iup.png">
+                    <img src="/oscp/img/kl3/iup.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Alright! Let’s go ahead and print out the username, and password columns using the following sql query.<blockquote>-1 union select 1,group_concat(username,0x3a,password),3,4,5,6 FROM dev_accounts--</blockquote></p>
+            <div class="picture-container">
+                <a href="sqlupdump" data-featherlight="/oscp/img/kl3/sqlupdump.png">
+                    <img src="/oscp/img/kl3/sqlupdump.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Awesome, We got 2 Usernames and Passwords. we can go ahead and copy the hashes for both passwords into our system and attempt to crack the hashes. We can use <b>HashCat</b> to crack the hashes.</p>
+            <div class="picture-container">
+                <a href="hashes" data-featherlight="/oscp/img/kl3/hashes.png">
+                    <img src="/oscp/img/kl3/hashes.png" class="img-thumbnail" /></a>
+            </div><br>
+            <div class="picture-container">
+                <a href="hashc" data-featherlight="/oscp/img/kl3/hashc.png">
+                    <img src="/oscp/img/kl3/hashc.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Now that we have cracked both passwords let’s SSH into the Kioptrix Machine with our newly found credentials.</p>
+            <div class="picture-container">
+                <a href="sshuser" data-featherlight="/oscp/img/kl3/sshuser.png">
+                    <img src="/oscp/img/kl3/sshuser.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Okay, at this point we need to escalate our privileges to root! let us see what we can find in the system.</p>
+            <div class="picture-container">
+                <a href="sshls" data-featherlight="/oscp/img/kl3/sshls.png">
+                    <img src="/oscp/img/kl3/sshls.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>It looks like the user we are currently logged in as has sudo permissions to the "ht" editor. we can attempt to edit the /etc/sudoers file using "ht" editor. so, we can elevate our privileges! if for some reason you get an error when trying to run <b>sudo ht</b> then just export <b>xterm-color</b> as TERM as shown below.</p>
+            <div class="picture-container">
+                <a href="hterror" data-featherlight="/oscp/img/kl3/hterror.png">
+                    <img src="/oscp/img/kl3/hterror.png" class="img-thumbnail" /></a>
+            </div><br>
+            <div class="picture-container">
+                <a href="hteditor" data-featherlight="/oscp/img/kl3/hteditor.png">
+                    <img src="/oscp/img/kl3/hteditor.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>From here press <b>func+f3,</b> to open the /etc/sudoers file as shown below.</p>
+            <div class="picture-container">
+                <a href="htopen" data-featherlight="/oscp/img/kl3/htopen.png">
+                    <img src="/oscp/img/kl3/htopen.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>After the file is open, let’s add /bin/sh right after /usr/local/bin/ht, and don’t forget the comma as shown below!</p>
+            <div class="picture-container">
+                <a href="htroot" data-featherlight="/oscp/img/kl3/htroot.png">
+                    <img src="/oscp/img/kl3/htroot.png" class="img-thumbnail" /></a>
+            </div><br>
+            <p>Once you add, press <b>func+f2</b> to save the file and press ctrl+z to exit. Now let's see if our shell works!</p>
+            <div class="picture-container">
+                <a href="htrootshel" data-featherlight="/oscp/img/kl3/htrootshell.png">
+                    <img src="/oscp/img/kl3/htrootshell.png" class="img-thumbnail" /></a>
+            </div><br>
+
+        </div>
+
+    </div>
+                   
+    </section>
+    </div>
+    </div>
+   
+    </div>
+    
+    <!-- Footer -->
+    <div class="push"></div>
+    
+    <footer class="footer-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                    <h2><a href="#">About</a></h2>
+                    <p>3kara is the source for security concepts and information about Web, Mobile and API along with few Walkthroughs, Best practices, Cheatsheets, Custom Scripts, Tips & Techniques.</p>
+                    <p>Our goal is to spread enthusiasm, awareness and joy on information security as well as to document and share what we were able to learn  along the way.</p>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-contact">
+                    <h2>Contact</h2>
+                    <p>For queries, Contact us at adm1n.3kara@protonmail.com</p>
+                    <p>Stuck somewhere? Don't hesitate</p> 
+                    <p>Contact author directly by clicking on their name.</p>
+                </div>
+                
+    </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-inline footer-social-icons">
+                        
+                        <li class="list-inline-item"><a href="https://3kara.github.com"><span class="footer-icon-container"><i class="fab fa-github"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://twitter.com/_3kara?lang=en"><span class="footer-icon-container"><i class="fab fa-twitter"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://t.me/i3kara"><span class="footer-icon-container"><i class="fab fa-telegram"></i></span></a></li>
+                        <li class="list-inline-item"><a href="mailto:adm1n.3kara@protonmail.com"><span class="footer-icon-container"><i class="far fa-envelope"></i></span></a></li>
+                        <li class="list-inline-item"><a href="https://discord.gg/4uuuqHp"><span class="footer-icon-container"><i class="fab fa-discord"></i></span></a></li>
+                                                                       
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="footer-copyright">
+                        All rights reserved &copy; 3kara <script>document.write(new Date().getFullYear());</script> You reap what you sow
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </footer>
+     
+    <!-- After footer scripts -->
+    
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> <!-- jQuery -->    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script> <!-- Tween Max --> 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script> <!-- Gallery -->
+    <script src="/js/main.js"></script>
+    
+    </body>
+    
+    </html>

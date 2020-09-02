@@ -1,0 +1,63 @@
+[
+    {
+      "name":"OSCP Series - Vulnhub - DC 9",
+      "author":"tectra",
+      "url":"/oscp/walkthrough/vulnhub-dc-9"  
+    },
+    {
+      "name":"SCADA Security - Access Control Fundamentals",
+      "author":"kal",
+      "url":"/ics/ics-scada-security/access-control-fundamentals"  
+    },
+    {
+      "name":"SCADA Security - Access Control Fundamentals",
+      "author":"kal",
+      "url":"/ics/ics-scada-security/access-control-fundamentals"  
+    },
+    {
+      "name":"SCADA Security - Access Control Fundamentals",
+      "author":"kal",
+      "url":"/ics/ics-scada-security/access-control-fundamentals"  
+    },
+    {
+      "name":"SCADA Security - SCADA Security Assessment",
+      "author":"kal",
+      "url":"/ics/ics-scada-security/scada-security-assessment"  
+    },
+    {
+      "name":"Security Fundamentals - Identification and AAA",
+      "author":"kal",
+      "url":"/ics/ics-security-fundamentals/identification-and-aaa"  
+    },
+    {
+      "name":"Security Fundamentals - ICS Protocols",
+      "author":"kal",
+      "url":"/ics/ics-security-fundamentals/ics-protocols"  
+    },
+    {
+      "name":"Security Fundamentals - Access Control Fundamentals",
+      "author":"kal",
+      "url":"/ics/ics-security-fundamentals/access-control-fundamentals"  
+    },
+    {
+      "name":"Security Fundamentals - Introduction to SCADA Security",
+      "author":"kal",
+      "url":"/ics/ics-security-fundamentals/intro-to-scada-security"  
+    },
+    {
+      "name":"OSCP Series - Vulnhub - Kioptrix Level 3",
+      "author":"kal",
+      "url":"/oscp/walkthrough/vulnhub-kioptrix-level-3"
+    },
+    {
+      "name":"OSCP Series - Vulnhub - Kioptrix Level 2",
+      "author":"kal",
+      "url":"/oscp/walkthrough/vulnhub-kioptrix-level-2"
+    },
+    {
+      "name":"OSCP Series - Vulnhub - Kioptrix Level 1",
+      "author":"kal",
+      "url":"/oscp/walkthrough/vulnhub-kioptrix-level-1"
+    }
+]
+  
